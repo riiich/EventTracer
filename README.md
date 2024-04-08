@@ -1,6 +1,11 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+Technologies Used:
+ - Next.js
+ - Clerk (Authentication)
+ - MongoDB
+ - Stripe (Payment)
+ - Tailwind
+ - Shadcn (UI Component Library)
 
-## Getting Started
 
 First, run the development server:
 
