@@ -10,12 +10,13 @@ const Header = () => {
 		<header className="w-screen border-b">
 			<div className="wrapper flex items-center justify-between">
 				<Link href="/" className="w-36">
-					<Image src="/assets/images/logo.svg" alt="EventTracer Logo" width={128} height={38} />
+					<h5 className="h5-bold">EventTracer</h5>
+					{/* <Image  className="md:hidden" src="/assets/images/logo.svg" alt="EventTracer_Logo" width={128} height={38} /> */}
 				</Link>
 
                 {/* Desktop Navbar */}
                 <SignedIn>
-                    <nav className="md:flex-between hidden w-full max-w-xs">
+                    <nav className="hidden w-full max-w-xs md:flex-between">
                         <NavItems />
                     </nav>
                 </SignedIn>
