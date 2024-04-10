@@ -1,10 +1,9 @@
 import { Document, Schema, model, models } from "mongoose";
-import Event from "./event.model";
 
 export interface IOrder extends Document {
 	stripeId: string;
 	totalAmount: string;
-    createdAt: Date;
+	createdAt: Date;
 	event: {
 		_id: string;
 		title: string;
@@ -15,6 +14,15 @@ export interface IOrder extends Document {
 		lastName: string;
 	};
 }
+
+export type IOrderItem = {
+	_id: string;
+	eventId: string;
+	eventTitle: string;
+	totalAmount: string;
+	createdAt: Date;
+	buyer: string;
+};
 
 const OrderSchema = new Schema({
 	stripeId: { type: String, required: true, unique: true },
