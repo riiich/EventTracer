@@ -1,9 +1,12 @@
 "use server";
 
-import { CreateUserParams } from "@/types";
+import { CreateUserParams, UpdateUserParams } from "@/types";
 import { handleError } from "../utils";
 import { connectToDatabase } from "../database";
 import User from "../database/models/user.model";
+import Event from "../database/models/event.model";
+import Order from "../database/models/order.model";
+import { revalidatePath } from "next/cache";
 
 export const createUser = async (user: CreateUserParams) => {
 	try {
@@ -13,8 +16,73 @@ export const createUser = async (user: CreateUserParams) => {
 
         const newUser = User.create(user);
 
-        return JSON.parse(JSON.stringify((newUser)));
+        return JSON.parse(JSON.stringify((newUser)));   // passed to client
     } catch (err) {
         handleError(err);
 	}
 };
+
+export const getUserById = async (userId: string) => {
+    try {
+      await connectToDatabase()
+  
+      const user = await User.findById(userId)
+  
+      if (!user) throw new Error('User not found')
+      return JSON.parse(JSON.stringify(user))
+    } catch (error) {
+      handleError(error)
+    }
+  }
+
+export const updateUser = async (clerkId: string, user: UpdateUserParams) => {
+    try {
+        await connectToDatabase();
+
+        const updatedUser = User.findOneAndUpdate({ clerkId }, user, { new: true });
+
+        if(!updatedUser) {
+            throw new Error("User update failed...");
+        }
+
+        return JSON.parse(JSON.stringify(updatedUser));
+    } catch(err) {
+        handleError(err);
+    }
+}
+
+export const deleteUser = async (clerkId: string) => {
+    try {
+        await connectToDatabase();
+
+        // find user to delete
+        const userToDelete = await User.findOne({clerkId});
+
+        if(!userToDelete) {
+            throw new Error("User is not found...");
+        }
+
+        // unlink the relationships that it has to other data (essentially delete all 
+        //   the events and orders that is associated with this user)
+        await Promise.all([
+            // update 'event's collection to remove any references to the user
+            Event.updateMany(
+                { _id: { $in: userToDelete.events } },
+                { $pull: { organizer: userToDelete._id } }
+            ),
+            // update 'orders' collection to remove any references to the user
+            Order.updateMany(
+                { _id: { $in: userToDelete.orders } },
+                { $unset: { buyer: 1 } }
+            )
+        ]);
+
+        // delete user
+        const deletedUser = await User.findByIdAndDelete(userToDelete._id);
+        revalidatePath("/");
+
+        return deletedUser ? JSON.parse(JSON.stringify(deletedUser)) : null;
+    } catch(err) {
+        handleError(err);
+    }
+} 

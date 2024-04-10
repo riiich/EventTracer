@@ -12,7 +12,7 @@ export type CreateUserParams = {
     firstName: string
     lastName: string
     username: string
-    photo: string
+    image: string
   }
   
   // ====== EVENT PARAMS

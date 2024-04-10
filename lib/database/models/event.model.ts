@@ -2,7 +2,7 @@ import { Document, Schema, model, models } from "mongoose";
 import User from "./user.model";
 
 export interface IEvent extends Document {
-    _id: string,
+    _id: string;
 	title: string;
 	description?: string;
 	location?: string;
@@ -15,8 +15,8 @@ export interface IEvent extends Document {
 	endDateTime: Date;
 	imageUrl: string;
 	attendanceCount: number;
-	category: {_id: string, name: string},
-	organizer: {_id: string, firstName: string, lastName: string},
+	category: {_id: string, name: string};
+	organizer: {_id: string, firstName: string, lastName: string};
 }
 
 const EventSchema = new Schema({

@@ -1,8 +1,4 @@
 import { Schema, model, models } from "mongoose";
-import Event from "./event.model";
-import { unique } from "next/dist/build/utils";
-import { Int32 } from "mongodb";
-import { kStringMaxLength } from "buffer";
 
 const UserSchema = new Schema({
 	clerkId: { type: String, required: true, unique: true },
