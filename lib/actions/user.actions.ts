@@ -14,7 +14,7 @@ export const createUser = async (user: CreateUserParams) => {
         // when running database server actions, need to connect to the database every time, but we have the connection cached
         await connectToDatabase();    // since there is a cached connection, we don't need to connect to the database every time
 
-        const newUser = User.create(user);
+        const newUser = await User.create(user);
 
         return JSON.parse(JSON.stringify((newUser)));   // passed to client
     } catch (err) {
@@ -39,7 +39,7 @@ export const updateUser = async (clerkId: string, user: UpdateUserParams) => {
     try {
         await connectToDatabase();
 
-        const updatedUser = User.findOneAndUpdate({ clerkId }, user, { new: true });
+        const updatedUser = await User.findOneAndUpdate({ clerkId }, user, { new: true });
 
         if(!updatedUser) {
             throw new Error("User update failed...");
