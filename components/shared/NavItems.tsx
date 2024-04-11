@@ -13,7 +13,7 @@ export const NavItems = () => {
 				const isActive = pathname === link.route;
 
 				return (
-					<Link href={link.route}>
+					<Link href={link.route} key={link.route}>
 						<li
 							className={`${
 								isActive && "text-primary-500"

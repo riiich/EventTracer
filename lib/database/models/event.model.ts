@@ -1,5 +1,4 @@
 import { Document, Schema, model, models } from "mongoose";
-import User from "./user.model";
 
 export interface IEvent extends Document {
 	_id: string;
@@ -13,7 +12,6 @@ export interface IEvent extends Document {
 	startDateTime: Date;
 	endDateTime: Date;
 	imageUrl: string;
-	attendanceCount: number;
 	category: { _id: string; name: string };
 	organizer: { _id: string; firstName: string; lastName: string };
 }
@@ -29,7 +27,6 @@ const EventSchema = new Schema({
 	startDateTime: { type: Date, default: Date.now },
 	endDateTime: { type: Date, default: Date.now },
 	imageUrl: { type: String, required: true },
-	attendanceCount: { type: Number, default: 0 },
 	category: { type: Schema.Types.ObjectId, ref: "Category" },
 	organizer: { type: Schema.Types.ObjectId, ref: "User" },
 });
