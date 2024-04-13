@@ -7,6 +7,7 @@ import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
+import { Label } from "../ui/label";
 import { eventFormSchema } from "@/lib/validator";
 import { eventDefaultValues } from "@/constants";
 import DropdownMenu from "./DropdownMenu";
@@ -15,6 +16,7 @@ import { useState } from "react";
 import Image from "next/image";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { Checkbox } from "../ui/checkbox";
 
 type EventFormProps = {
 	userId: string;
@@ -23,6 +25,7 @@ type EventFormProps = {
 
 const EventForm = ({ userId, type }: EventFormProps) => {
 	const [files, setFiles] = useState<File[]>([]);
+	const [isFree, setIsFree] = useState(false);
 	const initialValues = eventDefaultValues;
 
 	// define the form
@@ -39,6 +42,7 @@ const EventForm = ({ userId, type }: EventFormProps) => {
 	return (
 		<Form {...form}>
 			<form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-5">
+				{/* EVENT TITLE */}
 				<div className="flex flex-col gap-5 md:flex-row">
 					<FormField
 						control={form.control}
@@ -48,7 +52,7 @@ const EventForm = ({ userId, type }: EventFormProps) => {
 								<FormLabel className="mx-2">Event Title</FormLabel>
 								<FormControl className="px-3">
 									<Input
-										className="rounded-full bg-primary-50"
+										className="rounded-full bg-primary-50 focus-visible:ring-lime-300 focus-visible:outline-0"
 										placeholder="Enter event title..."
 										{...field}
 									/>
@@ -59,6 +63,7 @@ const EventForm = ({ userId, type }: EventFormProps) => {
 					/>
 				</div>
 
+				{/* EVENT DESCRIPTION */}
 				<div className="flex flex-col gap-5 md:flex-row">
 					<FormField
 						control={form.control}
@@ -79,6 +84,7 @@ const EventForm = ({ userId, type }: EventFormProps) => {
 					/>
 				</div>
 
+				{/* CATEGORY */}
 				<div className="flex flex-col gap-5 md:flex-row">
 					<FormField
 						control={form.control}
@@ -95,6 +101,7 @@ const EventForm = ({ userId, type }: EventFormProps) => {
 					/>
 				</div>
 
+				{/* IMAGE FILE UPLOAD */}
 				<div className="flex flex-col gap-5 md:flex-row">
 					<FormField
 						control={form.control}
@@ -115,6 +122,7 @@ const EventForm = ({ userId, type }: EventFormProps) => {
 					/>
 				</div>
 
+				{/* LOCATION */}
 				<div className="flex flex-col gap-5 md:flex-row">
 					<FormField
 						control={form.control}
@@ -129,10 +137,11 @@ const EventForm = ({ userId, type }: EventFormProps) => {
 											alt="location"
 											width={25}
 											height={25}
+											className="mr-1"
 										/>
 										<Input
-											className="rounded-full bg-primary-50"
-											placeholder={"Enter location..."}
+											className="rounded-full bg-primary-50 focus-visible:ring-lime-300 focus-visible:outline-0"
+											placeholder={"Enter location OR online meeting..."}
 											{...field}
 										/>
 									</div>
@@ -143,7 +152,8 @@ const EventForm = ({ userId, type }: EventFormProps) => {
 					/>
 				</div>
 
-				<div className="flex flex-col gap-5 md:flex-row">
+				{/* DATES */}
+				<div className="flex flex-col gap-5 w-full md:flex-row md:w-fit">
 					<FormField
 						control={form.control}
 						name="startDateTime"
@@ -154,7 +164,7 @@ const EventForm = ({ userId, type }: EventFormProps) => {
 									<div className="flex h-[54px] w-full overflow-hidden rounded-full bg-grey-50 px-4 py-2">
 										<Image
 											src="/assets/icons/calendar.svg"
-											alt="location"
+											alt="calendar"
 											width={25}
 											height={25}
 										/>
@@ -163,6 +173,7 @@ const EventForm = ({ userId, type }: EventFormProps) => {
 											selected={field.value}
 											onChange={(date: Date) => field.onChange(date)}
 											showTimeSelect
+											timeIntervals={15}
 											timeInputLabel="Time:"
 											dateFormat="MM-dd-yyyy @ h:mmaa"
 										/>
@@ -172,9 +183,7 @@ const EventForm = ({ userId, type }: EventFormProps) => {
 							</FormItem>
 						)}
 					/>
-				</div>
 
-				<div className="flex flex-col gap-5 md:flex-row">
 					<FormField
 						control={form.control}
 						name="endDateTime"
@@ -185,7 +194,7 @@ const EventForm = ({ userId, type }: EventFormProps) => {
 									<div className="flex h-[54px] w-full overflow-hidden rounded-full bg-grey-50 px-5 py-2">
 										<Image
 											src="/assets/icons/calendar.svg"
-											alt="location"
+											alt="calendar"
 											width={25}
 											height={25}
 										/>
@@ -194,6 +203,7 @@ const EventForm = ({ userId, type }: EventFormProps) => {
 											selected={field.value}
 											onChange={(date: Date) => field.onChange(date)}
 											showTimeSelect
+											timeIntervals={15}
 											timeInputLabel="Time:"
 											dateFormat="MM-dd-yyyy @ h:mmaa"
 										/>
@@ -205,7 +215,94 @@ const EventForm = ({ userId, type }: EventFormProps) => {
 					/>
 				</div>
 
-				<Button type="submit">Submit</Button>
+				{/* PRICE */}
+				<div className="flex flex-col gap-5 md:flex-row md:w-6/12">
+					<FormField
+						control={form.control}
+						name="price"
+						render={({ field }) => (
+							<FormItem className="w-full">
+								<FormLabel className="mx-2">Price</FormLabel>
+								<FormControl className="px-3">
+									<div className="flex-center h-[54px] w-full overflow-hidden rounded-full bg-grey-50 px-5 py-2">
+										<Image
+											src="/assets/icons/dollar.svg"
+											alt="price"
+											width={25}
+											height={25}
+										/>
+										<Input
+											type="number"
+											className="rounded-full bg-primary-50 focus-visible:ring-lime-300 focus-visible:outline-0"
+											placeholder={"Enter price..."}
+											{...field}
+											disabled={isFree}
+										/>
+										<FormField
+											control={form.control}
+											name="isFree"
+											render={({ field }) => (
+												<FormItem className="w-full">
+													<FormControl className="px-3">
+														<div className="flex h-[30px] w-full overflow-hidden rounded-full bg-grey-50 px-5 py-2 ">
+															<Checkbox
+																id="isFree"
+																className="ml-3"
+																onCheckedChange={field.onChange}
+																checked={field.value}
+																onClick={() => {
+																	setIsFree((free) => !free);
+																}}
+															/>
+															<Label htmlFor="isFree" className="ml-2">
+																Free
+															</Label>
+														</div>
+													</FormControl>
+													<FormMessage />
+												</FormItem>
+											)}
+										/>
+									</div>
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+				</div>
+
+				{/* URL */}
+				<div className="flex flex-col gap-5 md:flex-row">
+					<FormField
+						control={form.control}
+						name="url"
+						render={({ field }) => (
+							<FormItem className="w-full">
+								<FormLabel className="mx-2">Event URL</FormLabel>
+								<FormControl className="px-3">
+									<div className="flex-center h-[54px] w-full overflow-hidden rounded-full bg-grey-50 px-5 py-2">
+										<Image
+											src="/assets/icons/link.svg"
+											alt="url"
+											width={25}
+											height={25}
+										/>
+										<Input
+											className="rounded-full bg-primary-50 ml-1 focus-visible:ring-lime-300 focus-visible:outline-0"
+											placeholder="Enter event url..."
+											{...field}
+										/>
+									</div>
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+				</div>
+
+				<Button type="submit" disabled={form.formState.isSubmitting} className="bg-green-400 hover:bg-green-500 active:bg-green-600" >
+					{form.formState.isSubmitting ? "Uploading Event..." : `${type} Event`}
+				</Button>
 			</form>
 		</Form>
 	);

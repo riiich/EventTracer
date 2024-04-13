@@ -14,9 +14,9 @@ export const eventFormSchema = z.object({
 		.min(2, "Location must be at least 2 characters")
 		.max(150, "Location must be less than 150 characters"),
 	imageUrl: z
-		.string()
-		.min(3, "Image url must be at least 3 characters.")
-		.max(400, "Image url must be less than 400 characters"),
+		.string(),
+		// .min(3, "Image url must be at least 3 characters.")
+		// .max(400, "Image url must be less than 400 characters"),
 	startDateTime: z.date(),
 	endDateTime: z.date(),
 	url: z.string().url(),
