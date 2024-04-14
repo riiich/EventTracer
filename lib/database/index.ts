@@ -27,4 +27,3 @@ export const connectToDatabase = async () => {
 
     return cached.conn;
 }
-// 1:36:50

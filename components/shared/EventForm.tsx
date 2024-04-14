@@ -17,6 +17,7 @@ import Image from "next/image";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { Checkbox } from "../ui/checkbox";
+import { createEvent } from "@/lib/actions/event.action";
 
 type EventFormProps = {
 	userId: string;
@@ -34,9 +35,27 @@ const EventForm = ({ userId, type }: EventFormProps) => {
 		defaultValues: initialValues,
 	});
 
-	// submit handler
+	// submit all the information to the backend
 	const onSubmit = (values: z.infer<typeof eventFormSchema>) => {
 		console.log(values);
+
+		createEvent({
+			userId: userId,
+			event: {
+				title: values.title,
+				description: values.description,
+				location: values.location,
+				imageUrl: values.imageUrl,
+				startDateTime: values.startDateTime,
+				endDateTime: values.endDateTime,
+				categoryId: values.categoryId,
+				price: values.price,
+				isFree: values.isFree,
+				url: values.url,
+			},
+			path: values.url,
+		});
+
 	};
 
 	return (
@@ -300,7 +319,11 @@ const EventForm = ({ userId, type }: EventFormProps) => {
 					/>
 				</div>
 
-				<Button type="submit" disabled={form.formState.isSubmitting} className="bg-green-400 hover:bg-green-500 active:bg-green-600" >
+				<Button
+					type="submit"
+					disabled={form.formState.isSubmitting}
+					className="bg-green-400 hover:bg-green-500 active:bg-green-600"
+				>
 					{form.formState.isSubmitting ? "Uploading Event..." : `${type} Event`}
 				</Button>
 			</form>

@@ -1,11 +1,10 @@
-import { startTransition, useState } from "react";
+import { startTransition, useState, useEffect } from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import {
 	AlertDialog,
 	AlertDialogAction,
 	AlertDialogCancel,
 	AlertDialogContent,
-	AlertDialogDescription,
 	AlertDialogFooter,
 	AlertDialogHeader,
 	AlertDialogTitle,
@@ -14,6 +13,7 @@ import {
 import { Separator } from "../ui/separator";
 import { ICategory } from "@/lib/database/models/category.model";
 import { Input } from "../ui/input";
+import { createCategory, getAllCategories } from "@/lib/actions/category.action";
 
 type DropdownMenuProps = {
 	value?: string;
@@ -22,17 +22,35 @@ type DropdownMenuProps = {
 
 const DropdownMenu = ({ value, onChangeHandler }: DropdownMenuProps) => {
 	const [categories, setCategories] = useState<ICategory[]>([]);
-    const [newCategory, setNewCategory] = useState("");
+	const [newCategory, setNewCategory] = useState("");
 
-	const addCategory = (newCategory: string) => {
-        setNewCategory(newCategory);
-        // setCategories((c) => [...c, newCategory]);
-    };
+	// add category to database
+	const handleAddCategory = () => {
+		createCategory({
+			categoryName: newCategory,
+		})
+			.then((data) => {
+				console.log(data);
+				setCategories((c) => [...c, data]);
+			})
+			.catch((err) => {
+				console.log(err);
+			});
 
-    // add category to database
-    const handleAddCategory = () => {
-        
-    };
+		console.log("in here?");
+	};
+
+	// retrieve all categories from database once the page loads
+	useEffect(() => {
+		const retrieveCategories = async () => {
+			const categoryData = await getAllCategories();
+
+			// if there is data that is returned, set the category state to the data returned
+			categoryData && setCategories(categoryData as ICategory[]);
+		};
+
+		retrieveCategories();
+	}, []);
 
 	return (
 		<div>
@@ -44,7 +62,7 @@ const DropdownMenu = ({ value, onChangeHandler }: DropdownMenuProps) => {
 					{categories.length > 0 &&
 						categories.map((c) => (
 							<>
-								<SelectItem value={c.title} key={c._id}>
+								<SelectItem value={c._id} key={c._id}>
 									{c.title}
 								</SelectItem>
 								<Separator />
@@ -57,11 +75,17 @@ const DropdownMenu = ({ value, onChangeHandler }: DropdownMenuProps) => {
 						<AlertDialogContent className="bg-gray-100">
 							<AlertDialogHeader>
 								<AlertDialogTitle>Add a category</AlertDialogTitle>
-								<Input placeholder="Enter a category..." onChange={(e) => addCategory(e.target.value)} />
+								<Input
+									type="text"
+									placeholder="Enter a category..."
+									onChange={(e) => setNewCategory(e.target.value)}
+								/>
 							</AlertDialogHeader>
 							<AlertDialogFooter>
 								<AlertDialogCancel>Cancel</AlertDialogCancel>
-								<AlertDialogAction onChange={() => startTransition(handleAddCategory)}>Add</AlertDialogAction>
+								<AlertDialogAction onClick={() => startTransition(handleAddCategory)}>
+									Add
+								</AlertDialogAction>
 							</AlertDialogFooter>
 						</AlertDialogContent>
 					</AlertDialog>
