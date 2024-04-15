@@ -18,6 +18,8 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { Checkbox } from "../ui/checkbox";
 import { createEvent } from "@/lib/actions/event.action";
+import { useUploadThing, uploadFiles } from "@/lib/uploadthing";
+import { useRouter } from "next/navigation";
 
 type EventFormProps = {
 	userId: string;
@@ -28,6 +30,9 @@ const EventForm = ({ userId, type }: EventFormProps) => {
 	const [files, setFiles] = useState<File[]>([]);
 	const [isFree, setIsFree] = useState(false);
 	const initialValues = eventDefaultValues;
+	const { startUpload } = useUploadThing("imageUploader");
+
+	const router = useRouter();
 
 	// define the form
 	const form = useForm<z.infer<typeof eventFormSchema>>({
@@ -36,26 +41,34 @@ const EventForm = ({ userId, type }: EventFormProps) => {
 	});
 
 	// submit all the information to the backend
-	const onSubmit = (values: z.infer<typeof eventFormSchema>) => {
-		console.log(values);
+	const onSubmit = async (values: z.infer<typeof eventFormSchema>) => {
+		let uploadedImageUrl = values.imageUrl;
 
-		createEvent({
-			userId: userId,
-			event: {
-				title: values.title,
-				description: values.description,
-				location: values.location,
-				imageUrl: values.imageUrl,
-				startDateTime: values.startDateTime,
-				endDateTime: values.endDateTime,
-				categoryId: values.categoryId,
-				price: values.price,
-				isFree: values.isFree,
-				url: values.url,
-			},
-			path: values.url,
-		});
+		if (uploadedImageUrl.length > 0) {
+			const uploadedImage = await startUpload(files);
 
+			if (!uploadedImage) return;
+
+			uploadedImageUrl = uploadedImage[0].url;
+		}
+
+		if (type === "Create") {
+			try {
+				const newEvent = await createEvent({
+					userId: userId,
+					event: { ...values, imageUrl: uploadedImageUrl },
+					path: "/profile",
+				});
+
+				// if new event exists, reset the form and go to the new event url
+				if (newEvent) {
+					form.reset();
+					router.push(`/events/${newEvent._id}`);
+				}
+			} catch (err) {
+				console.log(err);
+			}
+		}
 	};
 
 	return (
