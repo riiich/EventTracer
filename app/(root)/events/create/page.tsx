@@ -3,7 +3,7 @@ import { auth } from "@clerk/nextjs";
 
 const CreateEvent = () => {
     const { sessionClaims } = auth();
-    const userId = sessionClaims?.userId as string;
+    const userId = sessionClaims?.userId as string;   // remember to edit the public metadata in clerk dashboard to have userId
 
 	return (
 		<>

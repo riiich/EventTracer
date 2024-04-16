@@ -4,13 +4,13 @@ import { UploadThingError } from "uploadthing/server";
 const f = createUploadthing();
 
 const auth = (req: Request) => ({
-	id: "",
+	id: '',
 });
 
 // FileRouter for the app which may contain multiple FileRoutes
 export const FileRouters = {
 	// Define as many fileRoutes, each with a unique routeSlug
-	imageUploader: f({ image: { maxFileSize: "2MB" } })
+	imageUploader: f({ image: { maxFileSize: "4MB" } })
 		// Set permissions and file types for this FileRoute
 		.middleware(async ({ req }) => {
 			const user = await auth(req);

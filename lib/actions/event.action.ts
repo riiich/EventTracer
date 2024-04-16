@@ -5,6 +5,7 @@ import { handleError } from "../utils";
 import Event from "../database/models/event.model";
 import { CreateEventParams } from "@/types";
 import User from "../database/models/user.model";
+import Category from "../database/models/category.model";
 
 export const createEvent = async ({ userId, event, path }: CreateEventParams) => {
 	try {
@@ -12,8 +13,7 @@ export const createEvent = async ({ userId, event, path }: CreateEventParams) =>
 
 		const eventOrganizer = await User.findById(userId);
 
-		// !!! HOST IS NOT FOUND ERROR !!!
-		if(!eventOrganizer) {
+		if (!eventOrganizer) {
 			throw new Error("Host is not found!");
 		}
 
@@ -29,11 +29,28 @@ export const createEvent = async ({ userId, event, path }: CreateEventParams) =>
 	}
 };
 
+// populate information about the organizer of the event and category instead of just 
+//	receiving the id's of the organizer and category
+export const populateEvent = async (query: any) => {
+	return query
+		.populate({
+			path: "organizer",
+			model: User,
+			select: "_id firstName lastName",
+		})
+		.populate({
+			path: "category",
+			model: Category,
+			select: "_id title",
+		});
+};
+
 export const getEventById = async (eventId: string) => {
 	try {
 		await connectToDatabase();
 
-		const event = Event.findById(eventId);
+		const event = await populateEvent(Event.findById(eventId));
+		// const event = await Event.findById(eventId);
 
 		if (!event) {
 			throw new Error("Event not found!");
