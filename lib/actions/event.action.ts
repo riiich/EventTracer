@@ -29,20 +29,12 @@ export const createEvent = async ({ userId, event, path }: CreateEventParams) =>
 	}
 };
 
-// populate information about the organizer of the event and category instead of just 
+// populate information about the organizer of the event and category instead of just
 //	receiving the id's of the organizer and category
-export const populateEvent = async (query: any) => {
+const populateEvent = async (query: any) => {
 	return query
-		.populate({
-			path: "organizer",
-			model: User,
-			select: "_id firstName lastName",
-		})
-		.populate({
-			path: "category",
-			model: Category,
-			select: "_id title",
-		});
+		.populate({ path: "organizer", model: User, select: "_id firstName lastName" })
+		.populate({ path: "category", model: Category, select: "_id title" });
 };
 
 export const getEventById = async (eventId: string) => {
@@ -50,7 +42,6 @@ export const getEventById = async (eventId: string) => {
 		await connectToDatabase();
 
 		const event = await populateEvent(Event.findById(eventId));
-		// const event = await Event.findById(eventId);
 
 		if (!event) {
 			throw new Error("Event not found!");
