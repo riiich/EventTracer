@@ -57,7 +57,7 @@ export const getAllEvents = async () => {
 	try {
 		await connectToDatabase();
 
-		const allEvents = Event.find();
+		const allEvents = await Event.find();
 
 		return JSON.parse(JSON.stringify(allEvents));
 	} catch (err) {

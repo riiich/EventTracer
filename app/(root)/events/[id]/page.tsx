@@ -3,6 +3,7 @@ import { SearchParamProps } from "@/types";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { formatDateTime } from "@/lib/utils";
+import Link from "next/link";
 
 const EventInformation = async ({ params: { id } }: SearchParamProps) => {
 	const eventInfo = await getEventById(id);
@@ -40,14 +41,28 @@ const EventInformation = async ({ params: { id } }: SearchParamProps) => {
 							</div>
 						</div>
 
-						<div className="flex flex-row gap-2 w-fit my-1">
-							<Image 
-								src="/assets/icons/calendar.svg" 
-								alt="calendar"
-								width={25}
-								height={25}	
-							/>
-							<div>{formatDateTime(eventInfo.startDateTime).dateTime} - {formatDateTime(eventInfo.endDateTime).dateTime}</div>
+						<div className="flex flex-row gap-2 my-1">
+							<Image src="/assets/icons/calendar.svg" alt="calendar" width={25} height={25} />
+							<div>
+								{formatDateTime(eventInfo.startDateTime).dateTime} -{" "}
+								{formatDateTime(eventInfo.endDateTime).dateTime}
+							</div>
+						</div>
+
+						<div className="flex flex-row gap-2">
+							<Image src="/assets/icons/location.svg" alt="location" width={25} height={25} />
+							<div>{eventInfo.location}</div>
+						</div>
+
+						<div className="p-1 rounded-md">
+							<p className="p-semibold-18 underline lg:p-semibold-20">Event Details</p>
+							<p className="flex flex-col rounded-lg bg-white p-3">
+								{eventInfo.description}
+
+								<Link href={`${eventInfo.url}`} target="_blank" className="p-regular-14 text-blue-400 mt-5 md:text-[12px]">
+									{eventInfo.url}
+								</Link>
+							</p>
 						</div>
 
 						{/* BUY TICKET BUTTON */}

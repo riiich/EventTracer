@@ -1,8 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { getAllEvents } from "@/lib/actions/event.action";
 
-export default function Home() {
+export default async function Home() {
+	const allEvents = await getAllEvents();
+
+	console.log(allEvents);
+
 	return (
 		<>
 			<section className="bg-primary-50 bg-dotted-pattern bg-contain py-5 md:py-10">
@@ -38,6 +43,18 @@ export default function Home() {
 				<div className="flex w-full flex-col gap-5 md:flex-row ">
 					<p>Search</p>
 					<p>Categories</p>
+				</div>
+			</section>
+
+			<section>
+				<h2 className="h2-bold wrapper text-center">Events</h2>
+				<div className="flex flex-cols-4 md:flex-cols-2 sm:flex-row">
+					{allEvents.map((event) => (
+						<Link href={`http://www.localhost:3000/events/${event._id}`} className="bg-gray-200 rounded-md p-3 m-3" key={event._id}>
+							<Image src={`${event.imageUrl}`} alt="eventImage" width={200} height={300} />
+							<p className="p-semibold-18 underline text-center mt-1">{event.title}</p>
+						</Link>
+					))}
 				</div>
 			</section>
 		</>
