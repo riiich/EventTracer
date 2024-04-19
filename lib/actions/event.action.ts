@@ -3,7 +3,7 @@
 import { connectToDatabase } from "../database";
 import { handleError } from "../utils";
 import Event from "../database/models/event.model";
-import { CreateEventParams } from "@/types";
+import { CreateEventParams, GetAllEventsParams } from "@/types";
 import User from "../database/models/user.model";
 import Category from "../database/models/category.model";
 
@@ -53,13 +53,21 @@ export const getEventById = async (eventId: string) => {
 	}
 };
 
-export const getAllEvents = async () => {
+export const getAllEvents = async ({ query, limit = 5, page, category }: GetAllEventsParams) => {
 	try {
 		await connectToDatabase();
 
-		const allEvents = await Event.find();
+		const eventConditions = {};
 
-		return JSON.parse(JSON.stringify(allEvents));
+		const allEventsQuery = Event.find(eventConditions).sort({ createdAt: "descending" }).skip(0).limit(5);
+
+		const events = await populateEvent(allEventsQuery);
+		const numOfEvents = await Event.countDocuments(eventConditions);
+
+		return {
+			data: JSON.parse(JSON.stringify(events)),
+			totalPages: Math.ceil(numOfEvents / limit),
+		};
 	} catch (err) {
 		handleError(err);
 	}

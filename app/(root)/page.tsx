@@ -1,10 +1,17 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import EventCollection from "@/components/shared/EventCollection";
 import { getAllEvents } from "@/lib/actions/event.action";
+import Event from "@/lib/database/models/event.model";
 
 export default async function Home() {
-	const allEvents = await getAllEvents();
+	const allEvents = await getAllEvents({
+		query: "",
+		limit: 5,
+		page: 1,
+		category: "",
+	});
 
 	console.log(allEvents);
 
@@ -37,25 +44,23 @@ export default async function Home() {
 
 			<section id="events" className="wrapper my-8 flex flex-col gap-8 md:gap-12">
 				<h2 className="h2-bold">
-					Trusted by <br /> Hundreds of Events (Placeholder)
+					Trusted by <br /> Individual Event Organizers (Placeholder)
 				</h2>
 
-				<div className="flex w-full flex-col gap-5 md:flex-row ">
+				<div className="flex w-full flex-col gap-5 md:flex-row">
 					<p>Search</p>
 					<p>Categories</p>
 				</div>
-			</section>
 
-			<section>
-				<h2 className="h2-bold wrapper text-center">Events</h2>
-				<div className="flex flex-cols-4 md:flex-cols-2 sm:flex-row">
-					{allEvents.map((event) => (
-						<Link href={`http://www.localhost:3000/events/${event._id}`} className="bg-gray-200 rounded-md p-3 m-3" key={event._id}>
-							<Image src={`${event.imageUrl}`} alt="eventImage" width={200} height={300} />
-							<p className="p-semibold-18 underline text-center mt-1">{event.title}</p>
-						</Link>
-					))}
-				</div>
+				<EventCollection
+					collectionData={allEvents?.data}
+					emptyCollectionText="No Events Found..."
+					emptyStateText="Check back at a later time."
+					collectionType="All_Events"
+					limit={5}
+					pageNum={1}
+					totalPages={allEvents?.totalPages}
+				/>
 			</section>
 		</>
 	);
