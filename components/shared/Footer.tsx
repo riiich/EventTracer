@@ -5,7 +5,7 @@ const Footer = () => {
 		<footer className="border-t ">
 			<div className="flex wrapper flex-between flex-col gap-4 p-5 text-center sm:flex-row">
 				<Link href="/">2024 EventTracer&copy; · All Rights Reserved</Link>
-				<p>Contact Us</p>
+				<p>Placeholder</p>
 
 			</div>
 		</footer>

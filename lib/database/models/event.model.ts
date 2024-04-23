@@ -12,7 +12,9 @@ export interface IEvent extends Document {
 	startDateTime: Date;
 	endDateTime: Date;
 	imageUrl: string;
-	category: { _id: string; name: string };
+	category: {
+		title: ReactNode; _id: string; name: string 
+};
 	organizer: { _id: string; firstName: string; lastName: string };
 }
 

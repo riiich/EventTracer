@@ -35,7 +35,7 @@ const EventInformation = async ({ params: { id } }: SearchParamProps) => {
 								<p className="p-medium-16 py-2.5 px-2 border-2 border-solid border-none rounded-full bg-green-300 ">
 									{eventInfo.isFree ? "Free" : `$${eventInfo.price}`}
 								</p>
-								<p className="p-semibold-14 text-primary-500 py-2.5">
+								<p className="p-semibold-14 text-primary-500 my-2.5 infinite-color">
 									{eventInfo.category.title}
 								</p>
 							</div>
