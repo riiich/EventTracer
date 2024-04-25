@@ -3,9 +3,10 @@
 import { connectToDatabase } from "../database";
 import { handleError } from "../utils";
 import Event from "../database/models/event.model";
-import { CreateEventParams, GetAllEventsParams } from "@/types";
+import { CreateEventParams, DeleteEventParams, GetAllEventsParams, UpdateEventParams } from "@/types";
 import User from "../database/models/user.model";
 import Category from "../database/models/category.model";
+import { revalidatePath } from "next/cache";
 
 export const createEvent = async ({ userId, event, path }: CreateEventParams) => {
 	try {
@@ -73,7 +74,7 @@ export const getAllEvents = async ({ query, limit = 5, page, category }: GetAllE
 	}
 };
 
-export const updateEvent = async (eventId: string, event: CreateEventParams) => {
+export const updateEvent = async ({ userId, event, path }: UpdateEventParams) => {
 	try {
 		await connectToDatabase();
 	} catch (err) {
@@ -81,9 +82,19 @@ export const updateEvent = async (eventId: string, event: CreateEventParams) => 
 	}
 };
 
-export const deleteEvent = async () => {
+export const deleteEvent = async ({ eventId, path }: DeleteEventParams) => {
 	try {
 		await connectToDatabase();
+
+		const deletedEvent = await Event.findByIdAndDelete(eventId);
+
+		if (deletedEvent) {
+			// revalidates the path to clear the cache and refetch all the events 
+			//	because the events have been changed (deleted event)
+			revalidatePath(path);	
+		}
+
+		return JSON.parse(JSON.stringify(deletedEvent));
 	} catch (err) {
 		handleError(err);
 	}

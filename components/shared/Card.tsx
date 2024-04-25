@@ -2,6 +2,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { formatDateTime } from "@/lib/utils";
 import { IEvent } from "@/lib/database/models/event.model";
+import DeleteConfirmation from "./DeleteConfirmation";
+import { auth } from "@clerk/nextjs";
 
 type CardProps = {
 	event: IEvent;
@@ -10,10 +12,14 @@ type CardProps = {
 };
 
 const Card = ({ event, hasTickets, hasOrderLink }: CardProps) => {
+	const { sessionClaims } = auth();
+	const userId = sessionClaims?.userId;
+	const isEventOrganizer = userId === event.organizer._id.toString(); // convert to string b/c sometimes it takes the mongoDB id object and not a string
+
 	return (
 		<div
 			className="group relative flex flex-col min-h-[380px] w-full overflow-hidden bg-gray-200 rounded-lg p-3 m-3 shadow-xl
-			 		  hover:bg-green-100 hover:duration-700 focus:bg-green-300 md:min-h-[438px]"
+			 		   hover:duration-700 focus:bg-green-300 md:min-h-[438px]"
 		>
 			<Link
 				href={`/events/${event._id}`}
@@ -25,8 +31,8 @@ const Card = ({ event, hasTickets, hasOrderLink }: CardProps) => {
 					src={`${event.imageUrl}`}
 					alt="eventImage"
 					width={250}
-					height={300}
-					className="flex flex-col rounded-md w-full"
+					height={250}
+					className="flex flex-col rounded-md w-full min-h-[240px]"
 				/>
 			</Link>
 
@@ -42,7 +48,7 @@ const Card = ({ event, hasTickets, hasOrderLink }: CardProps) => {
 						height={30}
 						className="mr-3"
 					/>
-					<p>
+					<p className="mt-2">
 						{formatDateTime(event.startDateTime).dateTime} -{" "}
 						{formatDateTime(event.endDateTime).dateTime}
 					</p>
@@ -60,18 +66,41 @@ const Card = ({ event, hasTickets, hasOrderLink }: CardProps) => {
 				</div>
 			)}
 
-			<div className="flex flex-between w-full pt-8">
-				<p>
-					<span className="p-semibold-14">Organized by: </span> {event.organizer.firstName}{" "}
-					{event.organizer.lastName}
-				</p>
-				{hasOrderLink && (
+			<div className="">
+				<div className="flex flex-between w-full pt-8">
+					<p>
+						<span className="p-semibold-14">Host: </span> {event.organizer.firstName}{" "}
+						{event.organizer.lastName}
+					</p>
+				</div>
+				{!hasOrderLink && (
 					<Link href={`/orders?eventId=${event._id}`} className="flex gap-2">
 						<p className="hover:text-primary-500 active:text-purple-400">Order Details</p>
 						<Image src="/assets/icons/arrow.svg" alt="orderDetails" width={12} height={12} />
 					</Link>
 				)}
 			</div>
+
+			{isEventOrganizer && (
+				<div className="flex flex-row gap-2 w-fit mt-5">
+					<Link
+						href={`/events/${event._id}/update`}
+						className="bg-slate-300 hover:bg-slate-400 hover:duration-500 w-fit p-1 rounded-lg"
+					>
+						<Image
+							src="/assets/icons/edit.svg"
+							alt="delete"
+							width={30}
+							height={30}
+							// className="border-solid border-2 border-black"
+						/>
+						{/* <p className="text-center p-regular-14">Edit</p> */}
+					</Link>
+					<DeleteConfirmation eventId={event._id} />
+
+					
+				</div>
+			)}
 		</div>
 	);
 };

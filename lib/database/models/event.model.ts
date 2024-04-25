@@ -7,14 +7,15 @@ export interface IEvent extends Document {
 	location?: string;
 	price?: string;
 	url?: string;
-	isFree: Boolean;
+	isFree: boolean;
 	createdAt: Date;
 	startDateTime: Date;
 	endDateTime: Date;
 	imageUrl: string;
 	category: {
-		title: ReactNode; _id: string; name: string 
-};
+		_id: string;
+		title: string;
+	};
 	organizer: { _id: string; firstName: string; lastName: string };
 }
 

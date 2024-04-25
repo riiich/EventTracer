@@ -36,8 +36,6 @@ const DropdownMenu = ({ value, onChangeHandler }: DropdownMenuProps) => {
 			.catch((err) => {
 				console.log(err);
 			});
-
-		console.log("in here?");
 	};
 
 	// retrieve all categories from database once the page loads

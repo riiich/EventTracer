@@ -25,7 +25,7 @@ const EventCollection = async ({
 }: CollectionProps) => {
 	return (
 		<>
-			<h2 className="h2-bold wrapper text-center">Events</h2>
+			<h2 className="h2-bold wrapper text-center underline">Events</h2>
 			{collectionData.length > 0 ? (
 				<div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-10 2xl:grid-cols-5">
 					{collectionData.map((event) => {
@@ -36,7 +36,7 @@ const EventCollection = async ({
 					})}
 				</div>
 			) : (
-				<div className="flex items-center">
+				<div className="flex flex-col items-center">
 					<p className="p-bold-18 text-center sm:p-bold-16">{emptyCollectionText}</p>
 					<p className="p-medium-14 text-center sm:p-medium-12">{emptyStateText}</p>
 				</div>
