@@ -9,7 +9,6 @@ import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
 import { Label } from "../ui/label";
 import { eventFormSchema } from "@/lib/validator";
-import { eventDefaultValues } from "@/constants";
 import DropdownMenu from "./DropdownMenu";
 import FileUploader from "./FileUploader";
 import { useState } from "react";
@@ -17,19 +16,31 @@ import Image from "next/image";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { Checkbox } from "../ui/checkbox";
-import { createEvent } from "@/lib/actions/event.action";
+import { createEvent, updateEvent } from "@/lib/actions/event.action";
 import { useUploadThing, uploadFiles } from "@/lib/uploadthing";
 import { useRouter } from "next/navigation";
+import { IEvent } from "@/lib/database/models/event.model";
+import { eventDefaultValues } from "@/constants";
 
 type EventFormProps = {
 	userId: string;
 	type: "Create" | "Update";
+	eventId?: string;
+	event?: IEvent;
 };
 
-const EventForm = ({ userId, type }: EventFormProps) => {
+// optional prop since it isn't being passed to the create form
+const EventForm = ({ userId, type, eventId, event }: EventFormProps) => {
 	const [files, setFiles] = useState<File[]>([]);
 	const [isFree, setIsFree] = useState(false);
-	const initialValues = eventDefaultValues;
+	const initialValues =
+		event && type === "Update"
+			? {
+					...event,
+					startDateTime: new Date(event.startDateTime),
+					endDateTime: new Date(event.endDateTime),
+			  }
+			: eventDefaultValues;
 	const { startUpload } = useUploadThing("imageUploader");
 
 	const router = useRouter();
@@ -44,10 +55,14 @@ const EventForm = ({ userId, type }: EventFormProps) => {
 	const onSubmit = async (values: z.infer<typeof eventFormSchema>) => {
 		let uploadedImageUrl = values.imageUrl;
 
-		if (uploadedImageUrl.length > 0) {
+		console.log("uploadedImageUrl: ", uploadedImageUrl);
+
+		if (files.length > 0) {
 			const uploadedImage = await startUpload(files);
 
 			if (!uploadedImage) return;
+
+			console.log("uploadedImageUrl: ", uploadedImageUrl);
 
 			uploadedImageUrl = uploadedImage[0].url;
 		}
@@ -64,6 +79,29 @@ const EventForm = ({ userId, type }: EventFormProps) => {
 				if (newEvent) {
 					form.reset();
 					router.push(`/events/${newEvent._id}`);
+				}
+			} catch (err) {
+				console.log(err);
+			}
+		}
+
+		if (type === "Update") {
+			if (!eventId) {
+				// if there is no event, navigate back in history (similar to clicking the browser's back button)
+				router.back();
+				return;
+			}
+
+			try {
+				const updatedEvent = await updateEvent({
+					userId,
+					event: { ...values, imageUrl: uploadedImageUrl, _id: eventId },
+					path: `/events/${eventId}`,
+				});
+
+				if(updatedEvent) {
+					form.reset();
+					router.push(`/events/${updatedEvent._id}`);
 				}
 			} catch (err) {
 				console.log(err);
@@ -207,7 +245,7 @@ const EventForm = ({ userId, type }: EventFormProps) => {
 											showTimeSelect
 											timeIntervals={15}
 											timeInputLabel="Time:"
-											dateFormat="MM-dd-yyyy @ h:mmaa"
+											dateFormat="MM-dd-yyyy @ h:mm aa"
 										/>
 									</div>
 								</FormControl>
@@ -237,7 +275,7 @@ const EventForm = ({ userId, type }: EventFormProps) => {
 											showTimeSelect
 											timeIntervals={15}
 											timeInputLabel="Time:"
-											dateFormat="MM-dd-yyyy @ h:mmaa"
+											dateFormat="MM-dd-yyyy @ h:mm aa"
 										/>
 									</div>
 								</FormControl>

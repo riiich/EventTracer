@@ -37,7 +37,7 @@ const DeleteConfirmation = ({ eventId }: { eventId: string }) => {
 								startTransition(async () => {
 									try {
 										const data = await deleteEvent({ eventId, path: pathname });
-										// console.log(data);
+										console.log(data);
 									} catch (err) {
 										console.log(err);
 									}

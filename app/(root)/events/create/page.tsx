@@ -1,9 +1,15 @@
 import EventForm from "@/components/shared/EventForm";
 import { auth } from "@clerk/nextjs";
 
-const CreateEvent = () => {
-    const { sessionClaims } = auth();
-    const userId = sessionClaims?.userId as string;   // remember to edit the public metadata in clerk dashboard to have userId
+type CreateEventProps = {
+	params: {
+		id: string;
+	};
+};
+
+const CreateEvent = ({ params: { id } }: CreateEventProps) => {
+	const { sessionClaims } = auth();
+	const userId = sessionClaims?.userId as string; // remember to edit the public metadata in clerk dashboard to have userId
 
 	return (
 		<>
