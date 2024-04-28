@@ -19,7 +19,7 @@ const Card = ({ event, hasTickets, hasOrderLink }: CardProps) => {
 	return (
 		<div
 			className="group relative flex flex-col min-h-[380px] w-full overflow-hidden bg-gray-200 rounded-lg p-3 m-3 shadow-xl
-			 		   hover:duration-700 focus:bg-green-300 md:min-h-[438px]"
+			 		   hover:duration-500 focus:bg-green-300 hover:shadow-[0_15px_20px_10px_rgba(56,209,69,0.3)] md:min-h-[438px] "
 		>
 			<Link
 				href={`/events/${event._id}`}

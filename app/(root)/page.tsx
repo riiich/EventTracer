@@ -3,7 +3,6 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import EventCollection from "@/components/shared/EventCollection";
 import { getAllEvents } from "@/lib/actions/event.action";
-import Event from "@/lib/database/models/event.model";
 
 export default async function Home() {
 	const allEvents = await getAllEvents({
@@ -32,7 +31,7 @@ export default async function Home() {
 					</div>
 
 					<Image
-						className="max-h-[70vh] object-contain object-center 2xl:max-h-[50-[vh]"
+						className="max-h-[70vh] object-contain object-center 2xl:max-h-[50-[vh]]"
 						// src="/assets/images/image.jpg"
 						src="/assets/images/hero.png"
 						alt="hero"
@@ -52,6 +51,7 @@ export default async function Home() {
 					<p>Categories</p>
 				</div>
 
+				<h2 className="h2-bold wrapper text-center underline">Events</h2>
 				<EventCollection
 					collectionData={allEvents?.data}
 					emptyCollectionText="No Events Found..."

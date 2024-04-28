@@ -49,6 +49,7 @@ const FileUploader = ({ onFieldChange, imageUrl, setFiles }: FileUploaderProps) 
 					<img src="/assets/icons/upload.svg" alt="image file upload" width={100} height={100} />
 					<h3 className="mb-2 mt-2">Drag an image here!</h3>
 					<p className="p-medium-12 mb-4">PNG, JPG, JPEG, SVG</p>
+					<p className="p-medium-12 mb-4">Max size is 4 MB.</p>
 					<Button
 						type="button"
 						className="rounded-lg bg-green-400 hover:bg-green-500 active:bg-green-700"

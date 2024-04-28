@@ -105,7 +105,7 @@ export const getAllEvents = async ({ query, limit = 5, page, category }: GetAllE
 };
 
 // RETRIEVE ALL EVENTS THAT ARE CREATED BY A USER
-const getAllEventsByUser = async ({ userId, limit = 6, page }: GetEventsByUserParams) => {
+export const getAllEventsByUser = async ({ userId, limit = 6, page }: GetEventsByUserParams) => {
 	try {
 		await connectToDatabase();
 
@@ -130,7 +130,7 @@ const getAllEventsByUser = async ({ userId, limit = 6, page }: GetEventsByUserPa
 };
 
 // RETRIEVE ALL EVENTS THAT ARE RELATED TO A SPECIFIC EVENT via SAME CATEGORY
-const getRelatedEvents = async ({
+export const getRelatedEvents = async ({
 	categoryId,
 	eventId,
 	limit = 3,

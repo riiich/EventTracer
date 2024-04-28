@@ -21,6 +21,7 @@ import { useUploadThing, uploadFiles } from "@/lib/uploadthing";
 import { useRouter } from "next/navigation";
 import { IEvent } from "@/lib/database/models/event.model";
 import { eventDefaultValues } from "@/constants";
+import { playConfetti } from "../ui/confetti";
 
 type EventFormProps = {
 	userId: string;
@@ -55,14 +56,10 @@ const EventForm = ({ userId, type, eventId, event }: EventFormProps) => {
 	const onSubmit = async (values: z.infer<typeof eventFormSchema>) => {
 		let uploadedImageUrl = values.imageUrl;
 
-		console.log("uploadedImageUrl: ", uploadedImageUrl);
-
 		if (files.length > 0) {
 			const uploadedImage = await startUpload(files);
 
 			if (!uploadedImage) return;
-
-			console.log("uploadedImageUrl: ", uploadedImageUrl);
 
 			uploadedImageUrl = uploadedImage[0].url;
 		}
@@ -99,7 +96,7 @@ const EventForm = ({ userId, type, eventId, event }: EventFormProps) => {
 					path: `/events/${eventId}`,
 				});
 
-				if(updatedEvent) {
+				if (updatedEvent) {
 					form.reset();
 					router.push(`/events/${updatedEvent._id}`);
 				}
@@ -107,6 +104,8 @@ const EventForm = ({ userId, type, eventId, event }: EventFormProps) => {
 				console.log(err);
 			}
 		}
+
+		playConfetti();
 	};
 
 	return (
