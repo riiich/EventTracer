@@ -305,7 +305,7 @@ const EventForm = ({ userId, type, eventId, event }: EventFormProps) => {
 											className="rounded-full bg-primary-50 focus-visible:ring-lime-300 focus-visible:outline-0"
 											placeholder={"Enter price..."}
 											{...field}
-											disabled={isFree}
+											// disabled={isFree}
 										/>
 										<FormField
 											control={form.control}
@@ -319,9 +319,9 @@ const EventForm = ({ userId, type, eventId, event }: EventFormProps) => {
 																className="ml-3"
 																onCheckedChange={field.onChange}
 																checked={field.value}
-																onClick={() => {
-																	setIsFree((free) => !free);
-																}}
+																// onClick={() => {
+																// 	setIsFree((free) => !free);
+																// }}
 															/>
 															<Label htmlFor="isFree" className="ml-2">
 																Free

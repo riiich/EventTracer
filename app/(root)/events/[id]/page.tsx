@@ -7,10 +7,14 @@ import Link from "next/link";
 import { getRelatedEvents } from "@/lib/actions/event.action";
 import EventCollection from "@/components/shared/EventCollection";
 
-const EventInformation = async ({ params: { id } }: SearchParamProps) => {
+const EventInformation = async ({ params: { id }, searchParams }: SearchParamProps) => {
 	const eventInfo = await getEventById(id);
-	const relatedEvents = await getRelatedEvents({categoryId: eventInfo.category._id, eventId: id, page: 1});
-	
+	const relatedEvents = await getRelatedEvents({
+		categoryId: eventInfo.category._id,
+		eventId: id,
+		page: searchParams.page as string,	// for pagination
+	});
+
 	console.log(relatedEvents);
 
 	return (
@@ -92,14 +96,16 @@ const EventInformation = async ({ params: { id } }: SearchParamProps) => {
 
 			<section className="mt-20 mb-20">
 				<h2 className="h2-bold text-center underline">Related Events</h2>
-				<EventCollection 
-					collectionData={relatedEvents?.data}
-					emptyCollectionText="No related events..."
-					emptyStateText=""
-					limit={4}
-					pageNum={1}
-					totalPages={relatedEvents?.totalPages}
-				/>
+				<div className="mx-4 sm:flex-cols-1 md:flex-cols-2 lg:flex-cols-3 xxl:flex-cols-4">
+					<EventCollection
+						collectionData={relatedEvents?.data}
+						emptyCollectionText="No related events..."
+						emptyStateText="Check back later"
+						limit={4}
+						pageNum={1}
+						totalPages={relatedEvents?.totalPages}
+					/>
+				</div>
 			</section>
 		</>
 	);
