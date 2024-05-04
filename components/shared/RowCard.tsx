@@ -27,13 +27,13 @@ const RowCard = ({ event, hasTickets, hasOrderLink }: CardProps) => {
 				className="bg-gray-200 rounded-lg p-1.5 shadow-xl hover:bg-green-100 hover:duration-700 focus:bg-green-300"
 				key={event._id}
 			>
-				{/* <Image
+				<Image
 					src={`${event.imageUrl}`}
 					alt="eventImage"
 					width={150}
 					height={100}
-					className="flex flex-col rounded-md w-full "
-				/> */}
+					className="flex flex-col rounded-md w-full"
+				/>
 			</Link>
 
 			<div className="flex flex-col items-center">
@@ -76,7 +76,7 @@ const RowCard = ({ event, hasTickets, hasOrderLink }: CardProps) => {
 			</div>
 
 			{isEventOrganizer && (
-				<div className="flex flex-row gap-2 w-fit mt-5 items-center">
+				<div className="flex flex-row gap-2 w-fit mt-auto mb-3 mx-3 items-center">
 					<Link
 						href={`/events/${event._id}/update`}
 						className="bg-slate-300 hover:bg-slate-400 hover:duration-500 w-fit p-1 rounded-lg"

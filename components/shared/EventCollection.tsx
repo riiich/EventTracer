@@ -9,6 +9,7 @@ type CollectionProps = {
 	emptyCollectionText: string;
 	emptyStateText: string;
 	collectionType?: "All_Events" | "Events_Hosted" | "My_Tickets";
+	urlParamName?: string;
 	limit: number;
 	pageNum: number | string;
 	totalPages?: number;
@@ -34,6 +35,8 @@ const EventCollection = async ({
 
 						return <Card event={event} hasTickets={hasTickets} hasOrderLink={hasOrderLink} />
 					})}
+
+					{/* Pagination */}
 				</div>
 			) : (
 				<div className="flex flex-col items-center">

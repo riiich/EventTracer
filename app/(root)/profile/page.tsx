@@ -2,7 +2,9 @@ import { auth } from "@clerk/nextjs";
 import { currentUser } from "@clerk/nextjs";
 import { Separator } from "@/components/ui/separator";
 import { getAllEventsByUser } from "@/lib/actions/event.action";
+import { Button } from "@/components/ui/button";
 import CompactEventCollection from "@/components/shared/CompactEventCollection";
+import Link from "next/link";
 
 const Profile = async () => {
 	const { sessionClaims } = auth();
@@ -16,10 +18,10 @@ const Profile = async () => {
 
 	console.log("user: ", user);
 	console.log("userEvents: ", userEvents);
-	// columns-1 gap-2 sm:columns-2 m-4
+
 	return (
-		<div className="grid grid-cols-1 gap-2 m-4 border-2 border-dashed border-red-600 md:grid-cols-[35%_65%]">
-			<div className="bg-slate-100 rounded-lg">
+		<div className="grid grid-cols-1 gap-2 m-4 mb-20 md:grid-cols-[35%_65%]">
+			<div className="bg-slate-100 rounded-lg border border-solid border-black">
 				<section className="bg-slate-200 rounded-t-lg">
 					<h2 className="h2-bold p-2">My Profile</h2>
 				</section>
@@ -53,10 +55,10 @@ const Profile = async () => {
 					<Separator className="bg-slate-400" />
 				</div>
 			</div>
-			<div>
-				<div className="bg-slate-100 mx-2 rounded-lg">
-					<section className="bg-slate-200 p-3 rounded-t-lg">
-						<h4 className="h5-bold">Hosted Events ({userEvents?.data.length})</h4>
+			<>
+				<div className="bg-slate-100 rounded-lg border border-solid border-black">
+					<section className="flex flex-row bg-slate-200 p-3 rounded-t-lg">
+						<h4 className="h5-bold">My Hosted Events ({userEvents?.data.length})</h4>
 					</section>
 					<Separator className="bg-slate-400" />
 					<div className="p-2">
@@ -64,12 +66,19 @@ const Profile = async () => {
 							collectionData={userEvents?.data}
 							emptyCollectionText="You have not hosted any events."
 							emptyStateText=""
-							limit={5}
-							pageNum={1}
+							collectionType="Events_Hosted"
+							urlParamName="eventsPage"
+							limit={userEvents?.data.length}
+							pageNum={2}
 						/>
 					</div>
+					<div className="flex justify-center m-10">
+						<Button asChild className="px-3 bg-green-500 hover:bg-green-600 active:bg-green-700">
+							<Link href={"/events/create"}>Create an Event</Link>
+						</Button>
+					</div>
 				</div>
-			</div>
+			</>
 		</div>
 	);
 };

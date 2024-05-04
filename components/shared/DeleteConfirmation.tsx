@@ -21,7 +21,7 @@ const DeleteConfirmation = ({ eventId }: { eventId: string }) => {
 	const pathname = usePathname();
 
 	return (
-		<div className="bg-red-300 hover:bg-red-400 hover:duration-700 w-fit h-fit px-1 rounded-lg items-center">
+		<div className="w-fit h-fit px-1 rounded-lg items-center bg-red-300 hover:bg-red-400 hover:duration-700">
 			<AlertDialog>
 				<AlertDialogTrigger>
 					<Image src="/assets/icons/delete.svg" alt="delete" width={30} height={30} />

@@ -6,13 +6,14 @@ import { formatDateTime } from "@/lib/utils";
 import Link from "next/link";
 import { getRelatedEvents } from "@/lib/actions/event.action";
 import EventCollection from "@/components/shared/EventCollection";
+import PurchaseTicket from "@/components/shared/PurchaseTicket";
 
 const EventInformation = async ({ params: { id }, searchParams }: SearchParamProps) => {
 	const eventInfo = await getEventById(id);
 	const relatedEvents = await getRelatedEvents({
 		categoryId: eventInfo.category._id,
 		eventId: id,
-		page: searchParams.page as string,	// for pagination
+		page: searchParams.page as string, // for pagination
 	});
 
 	console.log(relatedEvents);
@@ -40,7 +41,7 @@ const EventInformation = async ({ params: { id }, searchParams }: SearchParamPro
 
 							<div className="flex flex-col gap-3 sm:flex-row sm:items-center">
 								<div className="flex gap-3">
-									<p className="p-medium-16 py-2.5 px-2 border-2 border-solid border-none rounded-full bg-green-300 ">
+									<p className="p-medium-16 py-2.5 px-2 border-2 border-none rounded-full bg-green-300 ">
 										{eventInfo.isFree ? "Free" : `$${eventInfo.price}`}
 									</p>
 									<p className="p-semibold-14 text-primary-500 my-2.5 infinite-color">
@@ -88,7 +89,8 @@ const EventInformation = async ({ params: { id }, searchParams }: SearchParamPro
 							</div>
 
 							{/* BUY TICKET BUTTON */}
-							<Button className="rounded-full">Purchase</Button>
+							<PurchaseTicket event={eventInfo} />
+
 						</div>
 					</div>
 				</div>

@@ -82,7 +82,7 @@ const Card = ({ event, hasTickets, hasOrderLink }: CardProps) => {
 			</div>
 
 			{isEventOrganizer && (
-				<div className="flex flex-row gap-2 w-fit mt-5">
+				<div className="flex flex-row gap-2 w-fit mt-auto">
 					<Link
 						href={`/events/${event._id}/update`}
 						className="bg-slate-300 hover:bg-slate-400 hover:duration-500 w-fit p-1 rounded-lg"

@@ -9,6 +9,7 @@ type CollectionProps = {
 	emptyCollectionText: string;
 	emptyStateText: string;
 	collectionType?: "All_Events" | "Events_Hosted" | "My_Tickets";
+	urlParamName?: string;
 	limit: number;
 	pageNum: number | string;
 	totalPages?: number;
@@ -19,6 +20,7 @@ const CompactEventCollection = async ({
 	emptyCollectionText,
 	emptyStateText,
 	collectionType,
+	urlParamName,
 	limit,
 	pageNum,
 	totalPages = 0,
@@ -27,7 +29,7 @@ const CompactEventCollection = async ({
 		<>
 			{/* <h2 className="h2-bold wrapper text-center underline">Events</h2> */}
 			{collectionData.length > 0 ? (
-				<div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-10 2xl:grid-cols-4">
+				<div className="grid grid-cols-1 gap-5 mx-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-10 2xl:grid-cols-4">
 					{collectionData.map((event) => {
 						const hasTickets = collectionType === "My_Tickets";  
 						const hasOrderLink = collectionType === "Events_Hosted";
