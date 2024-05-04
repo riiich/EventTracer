@@ -6,7 +6,7 @@ import { formatDateTime } from "@/lib/utils";
 import Link from "next/link";
 import { getRelatedEvents } from "@/lib/actions/event.action";
 import EventCollection from "@/components/shared/EventCollection";
-import PurchaseTicket from "@/components/shared/PurchaseTicket";
+import PurchaseTicket from "@/components/shared/PurchaseButton";
 
 const EventInformation = async ({ params: { id }, searchParams }: SearchParamProps) => {
 	const eventInfo = await getEventById(id);
@@ -36,7 +36,7 @@ const EventInformation = async ({ params: { id }, searchParams }: SearchParamPro
 
 							<p className="p-semibold-18 ml-2 mt-2 text-center sm:mt-0 ">
 								Hosted by:{" "}
-								<span>{`${eventInfo.organizer.firstName} ${eventInfo.organizer.lastName}`}</span>
+								<span>{`${eventInfo.organizer?.firstName} ${eventInfo.organizer?.lastName}`}</span>
 							</p>
 
 							<div className="flex flex-col gap-3 sm:flex-row sm:items-center">

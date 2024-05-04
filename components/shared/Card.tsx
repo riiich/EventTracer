@@ -14,7 +14,7 @@ type CardProps = {
 const Card = ({ event, hasTickets, hasOrderLink }: CardProps) => {
 	const { sessionClaims } = auth();
 	const userId = sessionClaims?.userId;
-	const isEventOrganizer = userId === event.organizer._id.toString(); // convert to string b/c sometimes it takes the mongoDB id object and not a string
+	const isEventOrganizer = userId === event.organizer?._id.toString(); // convert to string b/c sometimes it takes the mongoDB id object and not a string
 
 	return (
 		<div
@@ -69,8 +69,8 @@ const Card = ({ event, hasTickets, hasOrderLink }: CardProps) => {
 			<div className="">
 				<div className="flex flex-between w-full pt-8">
 					<p>
-						<span className="p-semibold-14">Host: </span> {event.organizer.firstName}{" "}
-						{event.organizer.lastName}
+						<span className="p-semibold-14">Host: </span> {event.organizer?.firstName}{" "}
+						{event.organizer?.lastName}
 					</p>
 				</div>
 				{!hasOrderLink && (
