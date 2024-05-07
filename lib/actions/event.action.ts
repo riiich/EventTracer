@@ -14,7 +14,6 @@ import {
 import User from "../database/models/user.model";
 import Category from "../database/models/category.model";
 import { revalidatePath } from "next/cache";
-import { createCheckboxScope } from "@radix-ui/react-checkbox";
 
 // HELPER FUNCTIONS
 const getCategoryByName = async (name: string) => {

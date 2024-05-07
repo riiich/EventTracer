@@ -14,9 +14,7 @@ type PurchaseButtonProps = {
 const PurchaseButton = ({ event }: PurchaseButtonProps) => {
 	const { user } = useUser();
 	const userId = user?.publicMetadata.userId as string;
-	console.log(userId);
 	const canBuyTicket = new Date(event.endDateTime).getDate() < Date.now();
-	console.log(canBuyTicket);
 
 	return (
 		<div>
