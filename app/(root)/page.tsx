@@ -12,7 +12,7 @@ export default async function Home() {
 		category: "",
 	});
 
-	console.log(allEvents);
+	// console.log(allEvents);
 
 	return (
 		<>

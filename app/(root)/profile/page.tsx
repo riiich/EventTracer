@@ -5,6 +5,7 @@ import { getAllEventsByUser } from "@/lib/actions/event.action";
 import { Button } from "@/components/ui/button";
 import CompactEventCollection from "@/components/shared/CompactEventCollection";
 import Link from "next/link";
+import { getAllTickets } from "@/lib/actions/order.action";
 
 const Profile = async () => {
 	const { sessionClaims } = auth();
@@ -15,9 +16,6 @@ const Profile = async () => {
 		limit: 5,
 		page: 1,
 	});
-
-	console.log("user: ", user);
-	console.log("userEvents: ", userEvents);
 
 	return (
 		<div className="grid grid-cols-1 gap-2 m-4 mb-20 md:grid-cols-[35%_65%]">

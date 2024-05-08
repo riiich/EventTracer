@@ -16,7 +16,7 @@ const EventInformation = async ({ params: { id }, searchParams }: SearchParamPro
 		page: searchParams.page as string, // for pagination
 	});
 
-	console.log(relatedEvents);
+	// console.log(relatedEvents);
 
 	return (
 		<>
