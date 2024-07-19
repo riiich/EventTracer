@@ -5,7 +5,8 @@ import { getAllEventsByUser } from "@/lib/actions/event.action";
 import { Button } from "@/components/ui/button";
 import CompactEventCollection from "@/components/shared/CompactEventCollection";
 import Link from "next/link";
-import { getAllTickets } from "@/lib/actions/order.action";
+import { getAllTicketsFromUser } from "@/lib/actions/order.action";
+import TicketCollection from "@/components/shared/TicketCollection";
 
 const Profile = async () => {
 	const { sessionClaims } = auth();
@@ -16,9 +17,17 @@ const Profile = async () => {
 		limit: 5,
 		page: 1,
 	});
+	const userTickets = await getAllTicketsFromUser({
+		userId,
+		limit: 5,
+		page: 1,
+	});
+
+	// console.log(userTickets);
 
 	return (
-		<div className="grid grid-cols-1 gap-2 m-4 mb-20 md:grid-cols-[35%_65%]">
+		<div className="grid grid-cols-1 gap-2 m-2 mt-24 mb-20 md:grid-cols-[35%_65%]">
+			{/* USER INFORMATION */}
 			<div className="bg-slate-100 rounded-lg border border-solid border-black">
 				<section className="bg-slate-200 rounded-t-lg">
 					<h2 className="h2-bold p-2">My Profile</h2>
@@ -43,17 +52,31 @@ const Profile = async () => {
 						<span className="p-medium-18"># of Hosted Events:</span> {userEvents?.data.length}
 					</p>
 					<p className="p-semibold-24">
-						<span className="p-medium-18"># of Tickets Purchased:</span> {-69} placeholder
+						<span className="p-medium-18"># of Tickets Purchased:</span> {userTickets?.data.length}
 					</p>
 				</div>
+
+				{/* USER TICKET INFORMATION */}
 				<div className="bg-slate-100 my-4 rounded-lg">
 					<section className="bg-slate-200 p-3">
-						<h4 className="h5-bold">Tickets</h4>
+						<h4 className="h5-bold">Tickets ({userTickets?.data.length})</h4>
 					</section>
 					<Separator className="bg-slate-400" />
+					<div>
+						<TicketCollection
+							collectionData={userTickets?.data}
+							emptyCollectionText=""
+							emptyStateText="You haven't purchased any tickets yet..."
+							collectionType="My_Tickets"
+							limit={userTickets?.data.length}
+							pageNum={1}
+							totalPages={userTickets?.totalPages}
+						/>
+					</div>
 				</div>
 			</div>
 			<>
+				{/* USER HOSTED EVENT INFORMATION */}
 				<div className="bg-slate-100 rounded-lg border border-solid border-black">
 					<section className="flex flex-row bg-slate-200 p-3 rounded-t-lg">
 						<h4 className="h5-bold">My Hosted Events ({userEvents?.data.length})</h4>

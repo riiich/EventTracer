@@ -14,7 +14,8 @@ type PurchaseButtonProps = {
 const PurchaseButton = ({ event }: PurchaseButtonProps) => {
 	const { user } = useUser();
 	const userId = user?.publicMetadata.userId as string;
-	const canBuyTicket = new Date(event.endDateTime).getDate() < Date.now();
+	const eventEndDate = new Date(event.endDateTime).getTime();
+	const canBuyTicket = eventEndDate > Date.now();
 
 	return (
 		<div>
@@ -31,7 +32,15 @@ const PurchaseButton = ({ event }: PurchaseButtonProps) => {
 					</SignedOut>
 				</>
 			) : (
-				<Button className="rounded-full w-full" disabled>Tickets are unavailable</Button>
+				<>
+					{canBuyTicket ? (
+						<Button className="rounded-full w-full" disabled>
+							Tickets are unavailable
+						</Button>
+					) : (
+						<Button className="w-full bg-slate-400 text-black cursor-default hover:bg-slate-400">Event has ended</Button>
+					)}
+				</>
 			)}
 		</div>
 	);

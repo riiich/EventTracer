@@ -37,7 +37,7 @@ const Checkout = ({ event, userId }: CheckoutProps) => {
 		};
 		
 		console.log("Purchasing...");
-		await stripeCheckoutOrder(order);
+		await stripeCheckoutOrder(order);	// order action from lib/actions
 	};
 
 	return (
@@ -46,7 +46,7 @@ const Checkout = ({ event, userId }: CheckoutProps) => {
 			<Button
 				type="submit"
 				role="link"
-				className="rounded-full p-5 bg-green-500 hover:bg-green-600 active:scale-95 text-lg w-2/4"
+				className="rounded-full p-5 bg-green-500 hover:bg-green-600 active:scale-95 text-lg w-full"
 			>
 				{event.isFree ? "Get Free" : "Purchase Ticket"}
 			</Button>

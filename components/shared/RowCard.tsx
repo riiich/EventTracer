@@ -18,7 +18,7 @@ const RowCard = ({ event, hasTickets, hasOrderLink }: CardProps) => {
 
 	return (
 		<div
-			className="group relative flex flex-col w-full mt-2 overflow-hidden bg-gray-200 rounded-lg p-1 shadow-xl
+			className="group relative flex flex-col w-full mt-2 overflow-hidden bg-gray-200 border-4 rounded-lg p-1 shadow-xl
 			 		   hover:duration-500 focus:bg-green-300 hover:shadow-[0_15px_20px_10px_rgba(56,209,69,0.3)]"
 		>
 			<Link

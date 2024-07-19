@@ -122,12 +122,12 @@ export type CreateOrderParams = {
 
 export type GetOrdersByEventParams = {
 	eventId: string;
-	searchString: string;
+	searchedEvent: string;
 };
 
 export type GetOrdersByUserParams = {
 	userId: string | null;
-	limit?: number;
+	limit: number;
 	page: string | number | null;
 };
 

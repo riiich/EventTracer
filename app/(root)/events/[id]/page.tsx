@@ -6,7 +6,7 @@ import { formatDateTime } from "@/lib/utils";
 import Link from "next/link";
 import { getRelatedEvents } from "@/lib/actions/event.action";
 import EventCollection from "@/components/shared/EventCollection";
-import PurchaseTicket from "@/components/shared/PurchaseButton";
+import PurchaseButton from "@/components/shared/PurchaseButton";
 
 const EventInformation = async ({ params: { id }, searchParams }: SearchParamProps) => {
 	const eventInfo = await getEventById(id);
@@ -89,14 +89,14 @@ const EventInformation = async ({ params: { id }, searchParams }: SearchParamPro
 							</div>
 
 							{/* BUY TICKET BUTTON */}
-							<PurchaseTicket event={eventInfo} />
+							<PurchaseButton event={eventInfo} />
 
 						</div>
 					</div>
 				</div>
 			</section>
 
-			<section className="mt-20 mb-20">
+			<section className="mt-60 mb-60">
 				<h2 className="h2-bold text-center underline">Related Events</h2>
 				<div className="mx-4 sm:flex-cols-1 md:flex-cols-2 lg:flex-cols-3 xxl:flex-cols-4">
 					<EventCollection

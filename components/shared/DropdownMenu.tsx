@@ -59,12 +59,12 @@ const DropdownMenu = ({ value, onChangeHandler }: DropdownMenuProps) => {
 				<SelectContent>
 					{categories.length > 0 &&
 						categories.map((c) => (
-							<>
-								<SelectItem value={c._id} key={c._id}>
+							<div key={c._id}>
+								<SelectItem value={c._id}>
 									{c.title}
 								</SelectItem>
 								<Separator />
-							</>
+							</div>
 						))}
 					<AlertDialog>
 						<AlertDialogTrigger className="p-1 pl-2 text-green-500 w-full hover:bg-primary-50 focus:bg-green-200">

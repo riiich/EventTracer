@@ -34,7 +34,7 @@ const CompactEventCollection = async ({
 						const hasTickets = collectionType === "My_Tickets";  
 						const hasOrderLink = collectionType === "Events_Hosted";
 
-						return <RowCard event={event} hasTickets={hasTickets} hasOrderLink={hasOrderLink} />
+						return <RowCard event={event} hasTickets={hasTickets} hasOrderLink={hasOrderLink} key={event._id} />
 					})}
 				</div>
 			) : (
