@@ -15,6 +15,8 @@ const Card = ({ event, hasTickets, hasOrderLink }: CardProps) => {
 	const { sessionClaims } = auth();
 	const userId = sessionClaims?.userId;
 	const isEventOrganizer = userId === event.organizer?._id.toString(); // convert to string b/c sometimes it takes the mongoDB id object and not a string
+	const eventEndDate = new Date(event.endDateTime).getTime();
+	const canBuyTicket = eventEndDate > Date.now();
 
 	return (
 		<div
@@ -73,7 +75,7 @@ const Card = ({ event, hasTickets, hasOrderLink }: CardProps) => {
 						{event.organizer?.lastName}
 					</p>
 				</div>
-				{!hasOrderLink && (
+				{hasOrderLink && (
 					<Link href={`/orders?eventId=${event._id}`} className="flex gap-2">
 						<p className="hover:text-primary-500 active:text-purple-400">Order Details</p>
 						<Image src="/assets/icons/arrow.svg" alt="orderDetails" width={12} height={12} />

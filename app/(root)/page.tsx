@@ -3,16 +3,20 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import EventCollection from "@/components/shared/EventCollection";
 import { getAllEvents } from "@/lib/actions/event.action";
+import Search from "@/components/shared/Search";
+import { SearchParamProps } from "@/types";
 
-export default async function Home() {
+export default async function Home({ searchParams }: SearchParamProps) {
+	const searchQuery = (searchParams?.searchQuery as string) || "";
+	const category = (searchParams?.category as string) || "";
+	const page = Number(searchParams?.page) || 1;
+
 	const allEvents = await getAllEvents({
-		query: "",
+		query: searchQuery,
+		page: page,
+		category: category,
 		limit: 8,
-		page: 1,
-		category: "",
 	});
-
-	// console.log(allEvents);
 
 	return (
 		<>
@@ -31,7 +35,7 @@ export default async function Home() {
 					</div>
 
 					<Image
-						className="max-h-[70vh] w-screen object-contain object-center mt-10 mb-10 scale-125 2xl:max-h-[60-[vh]] md:mt-32"
+						className="max-h-[70vh] w-screen object-contain object-center mt-10 mb-10 scale-110 scale-y-150 2xl:max-h-[60-[vh]] md:mt-32"
 						src="/assets/images/hero.png"
 						alt="hero"
 						width={1000}
@@ -42,12 +46,11 @@ export default async function Home() {
 
 			<section id="events" className="wrapper my-8 flex flex-col gap-8 md:gap-12">
 				<h2 className="h2-bold">
-					{/* Trusted by <br /> Individual Event Organizers (Placeholder) */}
 					Check out some events!
 				</h2>
 
 				<div className="flex w-full flex-col gap-5 md:flex-row">
-					<input placeholder="Search for event..." />
+					<Search placeholder="Search for an event..." />
 					<p>Categories</p>
 				</div>
 

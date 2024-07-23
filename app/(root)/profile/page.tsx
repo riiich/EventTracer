@@ -1,26 +1,29 @@
+import Link from "next/link";
 import { auth } from "@clerk/nextjs";
 import { currentUser } from "@clerk/nextjs";
 import { Separator } from "@/components/ui/separator";
 import { getAllEventsByUser } from "@/lib/actions/event.action";
+import { getAllTicketsFromUser } from "@/lib/actions/order.action";
 import { Button } from "@/components/ui/button";
 import CompactEventCollection from "@/components/shared/CompactEventCollection";
-import Link from "next/link";
-import { getAllTicketsFromUser } from "@/lib/actions/order.action";
 import TicketCollection from "@/components/shared/TicketCollection";
+import { SearchParamProps } from "@/types";
 
-const Profile = async () => {
+const Profile = async ({ searchParams }: SearchParamProps) => {
 	const { sessionClaims } = auth();
 	const userId = sessionClaims?.userId as string;
 	const user = await currentUser();
+	const eventsPage = Number(searchParams?.eventsPage) || 1;
 	const userEvents = await getAllEventsByUser({
 		userId,
 		limit: 5,
-		page: 1,
+		page: eventsPage,
 	});
+	const ticketsPage = Number(searchParams?.ticketsPage) || 1;
 	const userTickets = await getAllTicketsFromUser({
 		userId,
 		limit: 5,
-		page: 1,
+		page: ticketsPage,
 	});
 
 	// console.log(userTickets);
@@ -32,34 +35,38 @@ const Profile = async () => {
 				<section className="bg-slate-200 rounded-t-lg">
 					<h2 className="h2-bold p-2">My Profile</h2>
 				</section>
+
 				<Separator className="bg-slate-400" />
 
-				<div className="mt-1 p-3">
-					<p className="p-bold-24">Your information</p>
-					<p className="p-semibold-24">
-						<span className="p-medium-18">Username:</span> {user?.username}
-					</p>
-					<p className="p-semibold-24">
-						<span className="p-medium-18">Name:</span> {user?.firstName} {user?.lastName}
-					</p>
-					<p className="p-semibold-24">
-						<span className="p-medium-18">Email:</span> {user?.emailAddresses[0].emailAddress}
-					</p>
-					<p className="p-semibold-24">
-						<span className="p-medium-18">ID:</span> {user?.publicMetadata.userId as string}
-					</p>
-					<p className="p-semibold-24">
-						<span className="p-medium-18"># of Hosted Events:</span> {userEvents?.data.length}
-					</p>
-					<p className="p-semibold-24">
-						<span className="p-medium-18"># of Tickets Purchased:</span> {userTickets?.data.length}
-					</p>
-				</div>
+				<section>
+					<div className="mt-1 p-3">
+						<p className="p-bold-24">Your information</p>
+						<p className="p-semibold-24">
+							<span className="p-medium-18">Username:</span> {user?.username}
+						</p>
+						<p className="p-semibold-24">
+							<span className="p-medium-18">Name:</span> {user?.firstName} {user?.lastName}
+						</p>
+						<p className="p-semibold-24">
+							<span className="p-medium-18">Email:</span> {user?.emailAddresses[0].emailAddress}
+						</p>
+						<p className="p-semibold-24">
+							<span className="p-medium-18">ID:</span> {user?.publicMetadata.userId as string}
+						</p>
+						<p className="p-semibold-24">
+							<span className="p-medium-18"># of Hosted Events:</span> {userEvents?.data.length}
+						</p>
+						<p className="p-semibold-24">
+							<span className="p-medium-18"># of Tickets Purchased:</span>{" "}
+							{userTickets?.data.length}
+						</p>
+					</div>
+				</section>
 
 				{/* USER TICKET INFORMATION */}
 				<div className="bg-slate-100 my-4 rounded-lg">
 					<section className="bg-slate-200 p-3">
-						<h4 className="h5-bold">Tickets ({userTickets?.data.length})</h4>
+						<h4 className="h5-bold">My Tickets ({userTickets?.data.length})</h4>
 					</section>
 					<Separator className="bg-slate-400" />
 					<div>
@@ -69,13 +76,13 @@ const Profile = async () => {
 							emptyStateText="You haven't purchased any tickets yet..."
 							collectionType="My_Tickets"
 							limit={userTickets?.data.length}
-							pageNum={1}
+							pageNum={ticketsPage}
 							totalPages={userTickets?.totalPages}
 						/>
 					</div>
 				</div>
 			</div>
-			<>
+			<div>
 				{/* USER HOSTED EVENT INFORMATION */}
 				<div className="bg-slate-100 rounded-lg border border-solid border-black">
 					<section className="flex flex-row bg-slate-200 p-3 rounded-t-lg">
@@ -90,7 +97,8 @@ const Profile = async () => {
 							collectionType="Events_Hosted"
 							urlParamName="eventsPage"
 							limit={userEvents?.data.length}
-							pageNum={2}
+							pageNum={eventsPage}
+							totalPages={userEvents?.totalPages}
 						/>
 					</div>
 					<div className="flex justify-center m-10">
@@ -99,7 +107,7 @@ const Profile = async () => {
 						</Button>
 					</div>
 				</div>
-			</>
+			</div>
 		</div>
 	);
 };

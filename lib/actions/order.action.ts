@@ -124,30 +124,50 @@ export const getTicketsByEvents = async ({ eventId, searchedEvent }: GetOrdersBy
 		const eventObjectId = new ObjectId(eventId);
 
 		// getting all the orders
-		// const orders = await Order.aggregate([
-		// 	{
-		// 		$lookup: {
-		// 			from: "users",
-		// 			localField: "buyer",
-		// 			foreignField: "_id",
-		// 			as: "buyer",
-		// 		},
-		// 	},
-		// 	{
-		// 		$unwind: {},
-		// 	},
-		// ]);
+		const orders = await Order.aggregate([
+			{
+				$lookup: {
+					from: "users",
+					localField: "buyer",
+					foreignField: "_id",
+					as: "buyer",
+				},
+			},
+			{
+				$unwind: "$buyer",
+			},
+			{
+				$lookup: {
+					from: "events",
+					localField: "event",
+					foreignField: "_id",
+					as: "event",
+				},
+			},
+			{
+				$unwind: "$event",
+			},
+			{
+				$project: {
+					_id: 1,
+					totalAmount: 1,
+					createdAt: 1,
+					eventTitle: "$event.title",
+					eventId: "$event._id",
+					buyer: {
+						$concat: ["$buyer.firstName", " ", "$buyer.lastName"],
+					},
+				},
+			},
+			{
+				$match: {
+					$and: [{ eventId: eventObjectId }, { buyer: { $regex: RegExp(searchedEvent, "i") } }],
+				},
+			},
+		]);
+
+		return JSON.parse(JSON.stringify(orders));
 	} catch (err) {
 		handleError(err);
 	}
 };
-
-/*
-
-try {
-
-} catch(err) {
-	handleError(err);
-}
-
-*/

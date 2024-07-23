@@ -26,7 +26,7 @@ const CompactEventCollection = async ({
 	totalPages = 0,
 }: CollectionProps) => {
 	return (
-		<>
+		<div className="pr-5">
 			{/* <h2 className="h2-bold wrapper text-center underline">Events</h2> */}
 			{collectionData.length > 0 ? (
 				<div className="grid grid-cols-1 gap-5 mx-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-10 2xl:grid-cols-4">
@@ -43,7 +43,7 @@ const CompactEventCollection = async ({
 					<p className="p-medium-14 text-center sm:p-medium-12">{emptyStateText}</p>
 				</div>
 			)}
-		</>
+		</div>
 	);
 };
 

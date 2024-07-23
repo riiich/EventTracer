@@ -21,7 +21,7 @@ const TicketCollection = ({
 	pageNum,
 	totalPages = 0,
 }: CollectionProps) => {
-	console.log(collectionData);
+	// console.log(collectionData);
 
 	return (
 		<div>

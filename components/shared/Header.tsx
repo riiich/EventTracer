@@ -18,7 +18,7 @@ const Header = () => {
 	// const { setTheme } = useTheme();
 
 	return (
-		<header className="w-screen border-b-2 bg-white fixed top-0 z-10">
+		<header className="w-screen border-b-2 bg-slate-50 fixed top-0 z-10">
 			<div className="wrapper flex items-center justify-between">
 				<Link href="/" className="w-36">
 					<h5 className="h5-bold">EventTracer</h5>
