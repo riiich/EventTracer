@@ -44,7 +44,9 @@ const DropdownMenu = ({ value, onChangeHandler }: DropdownMenuProps) => {
 			const categoryData = await getAllCategories();
 
 			// if there is data that is returned, set the category state to the data returned
-			categoryData && setCategories(categoryData as ICategory[]);
+			if(categoryData) {
+                setCategories(categoryData as ICategory[]);
+            }
 		};
 
 		retrieveCategories();

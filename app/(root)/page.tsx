@@ -1,10 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import EventCollection from "@/components/shared/EventCollection";
 import { getAllEvents } from "@/lib/actions/event.action";
-import Search from "@/components/shared/Search";
 import { SearchParamProps } from "@/types";
+import EventCollection from "@/components/shared/EventCollection";
+import Search from "@/components/shared/Search";
+import CategoryFilter from "@/components/shared/CategoryFilter";
 
 export default async function Home({ searchParams }: SearchParamProps) {
 	const searchQuery = (searchParams?.searchQuery as string) || "";
@@ -13,9 +14,9 @@ export default async function Home({ searchParams }: SearchParamProps) {
 
 	const allEvents = await getAllEvents({
 		query: searchQuery,
+		limit: 8,
 		page: page,
 		category: category,
-		limit: 8,
 	});
 
 	return (
@@ -51,7 +52,7 @@ export default async function Home({ searchParams }: SearchParamProps) {
 
 				<div className="flex w-full flex-col gap-5 md:flex-row">
 					<Search placeholder="Search for an event..." />
-					<p>Categories</p>
+					<CategoryFilter />
 				</div>
 
 				<h2 className="h1-bold wrapper text-center underline">Events</h2>
@@ -60,10 +61,11 @@ export default async function Home({ searchParams }: SearchParamProps) {
 					emptyCollectionText="No Events Found..."
 					emptyStateText="Check back at a later time."
 					collectionType="All_Events"
-					limit={5}
-					pageNum={1}
+					limit={8}
+					pageNum={page}
 					totalPages={allEvents?.totalPages}
 				/>
+
 				<Link href="#main" className="p-2 bg-slate-200 w-fit rounded-lg">
 					<Image src="/assets/icons/up-arrow.svg" alt="hero" width={25} height={25} />
 				</Link>
