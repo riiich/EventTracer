@@ -21,14 +21,12 @@ const TicketCollection = ({
 	pageNum,
 	totalPages = 0,
 }: CollectionProps) => {
-	// console.log(collectionData);
-
 	return (
 		<div>
 			{collectionData.map((event) => {
 				const hasTickets = collectionType === "My_Tickets"; 
 
-				return <Ticket event={event.event} hasTickets={hasTickets} />;
+				return <Ticket event={event} hasTickets={hasTickets} />;
 			})}
 		</div>
 	);

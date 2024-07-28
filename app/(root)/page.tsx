@@ -64,7 +64,6 @@ export default async function Home({ searchParams }: SearchParamProps) {
 					limit={8}
 					pageNum={page}
 					totalPages={allEvents?.totalPages}
-					// totalPages={2}
 				/>
 
 				<Link href="#main" className="p-2 bg-slate-200 w-fit rounded-lg">

@@ -5,20 +5,18 @@ import Image from "next/image";
 import { formatDateTime } from "@/lib/utils";
 
 type TicketProps = {
-	event: IEvent;
+	event: any;
 	hasTickets?: boolean;
 };
 
 const Ticket = async ({ event, hasTickets }: TicketProps) => {
-	const currEvent = await getEventById(event._id);
+	const currEvent = await getEventById(event.event._id);
 	const currCategory = currEvent.category.title;
 	const eventEndDate = new Date(event.endDateTime).getTime();
 	const canBuyTicket = eventEndDate > Date.now();
 
-	// console.log(event);
-
 	return (
-		<Link href={`http://localhost:3000/events/${event._id}`}>
+		<Link href={`http://localhost:3000/events/${currEvent._id}`}>
 			<div
 				className={
 					canBuyTicket
@@ -29,12 +27,12 @@ const Ticket = async ({ event, hasTickets }: TicketProps) => {
 				}
 			>
 				<p className="mb-1 p-semibold-18 truncate">
-					{event.title} {canBuyTicket ? "" : "(Ended)"}
+					{currEvent.title} {canBuyTicket ? "" : "(Ended)"}
 				</p>
 				<div className="flex flex-row gap-3">
 					<>
 						<p className="rounded-full bg-green-300 w-fit pl-2 pr-2 pt-1 pb-1 p-semibold-14">
-							{event.isFree ? "Free" : "$".concat(event.price)}
+							{currEvent.isFree ? "Free" : "$".concat(currEvent.price)}
 						</p>
 						<p className="infinite-color">{currCategory}</p>
 					</>
@@ -48,8 +46,8 @@ const Ticket = async ({ event, hasTickets }: TicketProps) => {
 						className="mr-3"
 					/>
 					<p className="mt-2">
-						{formatDateTime(event.startDateTime).dateTime} -{" "}
-						{formatDateTime(event.endDateTime).dateTime}
+						{formatDateTime(currEvent.startDateTime).dateTime} -{" "}
+						{formatDateTime(currEvent.endDateTime).dateTime}
 					</p>
 				</div>
 			</div>
