@@ -55,7 +55,7 @@ export default async function Home({ searchParams }: SearchParamProps) {
 					<CategoryFilter />
 				</div>
 
-				<h2 className="h1-bold wrapper text-center underline">Events</h2>
+				<h2 className="wrapper h1-bold text-center underline">Events</h2>
 				<EventCollection
 					collectionData={allEvents?.data}
 					emptyCollectionText="No Events Found..."
@@ -64,6 +64,7 @@ export default async function Home({ searchParams }: SearchParamProps) {
 					limit={8}
 					pageNum={page}
 					totalPages={allEvents?.totalPages}
+					// totalPages={2}
 				/>
 
 				<Link href="#main" className="p-2 bg-slate-200 w-fit rounded-lg">
