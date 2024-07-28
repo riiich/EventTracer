@@ -16,7 +16,6 @@ export interface IOrder extends Document {
 }
 
 export type IOrderItem = {
-	[x: string]: IEvent;
 	_id: string;
 	eventId: string;
 	eventTitle: string;
